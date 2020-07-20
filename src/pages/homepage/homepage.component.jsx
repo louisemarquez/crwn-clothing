@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Directory from '/Users/louisemarquez/crwn-clothing/src/components/directory/directory.component.jsx';
+import Directory from '/Users/louisemarquez/VSCode/crwn-clothing/src/components/directory/directory.component.jsx';
 
 
 import './homepage.styles.scss';
