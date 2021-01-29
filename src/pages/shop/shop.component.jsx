@@ -1,40 +1,34 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
-import CollectionPage from '../collection/collection.component';
 
-import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
-import { selectIsCollectionFetching, selectIsCollectionsLoaded } from '../../redux/shop/shop.selectors';
+import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container';
+import CollectionPageContainer from '../collection/collection.container';
 
-import WithSpinner from '../../components/with-spinner/with-spinner.component'
+import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 
-const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
-const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
 class ShopPage extends React.Component {
 
     componentDidMount () {
-        const { fetchCollectionsStartAsync } = this.props;
-        fetchCollectionsStartAsync();
+        const { fetchCollectionsStart } = this.props;
+        fetchCollectionsStart();
     }
 
     render () {
-        const { match, isFetchingCollections, isCollectionsLoaded } = this.props;
+        const { match } = this.props;
 
         return (
             <div className= 'shop-page'>
                 <Route exact path= {`${match.path}`} 
-                render = {props => (
-                    <CollectionsOverviewWithSpinner isLoading={isFetchingCollections} {...props} />
-                )}
+                component={CollectionsOverviewContainer}
                 />
 
                 <Route path={`${match.path}/:collectionId`}
-                render = {props => (
+                component= {CollectionPageContainer}
+               /* render = {props => (
                     <CollectionPageWithSpinner isLoading={!isCollectionsLoaded} {...props} />
-                    /* REMEMBER: The value will be inverted compared to what isLoading is expecting. 
+                     REMEMBER: The value will be inverted compared to what isLoading is expecting. 
                     - If our collection is not laoded, we want to pass that the isLoading is TRUE.
                     - We want to tell our spinner to render
                     - So we actually need to reverse this value
@@ -44,20 +38,14 @@ class ShopPage extends React.Component {
                     - which means that if there is no collection, we want to tell that it's true so that
                     it renders the spinner.
                     */
-                )}
                 />
                 </div>
             );
     }
  } 
 
- const mapStateToProps = createStructuredSelector({
-     isFetchingCollections: selectIsCollectionFetching,
-     isCollectionsLoaded: selectIsCollectionsLoaded
- });
-
  const mapDispatchToProps = dispatch => ({
-    fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+    fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
  });
 
-export default connect (mapStateToProps, mapDispatchToProps)(ShopPage);
+export default connect (null, mapDispatchToProps)(ShopPage);
