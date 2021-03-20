@@ -32,6 +32,7 @@ export function* signInWithEmail({payload: { email, password }}) {
         yield getSnapshotFromUserAuth(user);
     } catch(error){
         yield put(signInFailure(error));
+        alert(error);
     }
 }
 
@@ -63,6 +64,7 @@ export function* signUp({payload: { email, password, displayName }}) {
         yield put(signUpSuccess({ user, additionalData: { displayName }}));
     } catch (error) {
         yield put(signUpFailure(error));
+        alert(error);
     }
 }
 
